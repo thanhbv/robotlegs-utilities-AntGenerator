@@ -1,47 +1,51 @@
-<project name="RobotLegs-Generator-1.0" default="main" >
-
-	<!--
-	User specific the global configuration properties.
-	-->
+<project name="RoboSignals-Form-Generator-1.3" default="main" >
+	
 	<property file="project.properties" />
 	<property file="config/robotlegs-generator.properties" />
 	<property file="config/log.properties" />
-
-	<target name="main" depends="create-RobotLegs-directories" />
-
-	<!-- create default RobotLegs directories -->
-	<target name="create-RobotLegs-directories" >
-		<echo>${log.create.RobotLegs.directories.message}</echo>
-        <mkdir dir="${project.url}/${control.dir}" />
-		<mkdir dir="${project.url}/${services.dir}" />
-		<mkdir dir="${project.url}/${events.dir}" />
-		<mkdir dir="${project.url}/utils" />
-		<mkdir dir="${project.url}/helpers" />
-		<mkdir dir="${project.url}/${view.dir}" />
-		<mkdir dir="${project.url}/${view.dir}/events" />
-		<mkdir dir="${project.url}/${view.dir}/components" />
-		<mkdir dir="${project.url}/${view.dir}/mediators" />
-		<mkdir dir="${project.url}/${view.dir}/helpers" />
-		<mkdir dir="${project.url}/${view.dir}/presenters" />
-		<mkdir dir="${project.url}/${view.dir}/signals" />
-        <mkdir dir="${project.url}/${model.dir}/${vo.dir}" />
+	
+	<target name="aa_test_properties">
+			<echo>project url: ${project.root.url}project.properties</echo>
+			<echo>${author.name}</echo>
+			<echo>${author.email}</echo>
+			<echo>${company.name}</echo>
+			<echo>${year}</echo>
+			<echo>${project.name}</echo>
+			<echo>${namespace}</echo>
+			<echo>${project.path}</echo>
+			<echo>${src.dir}</echo>
 	</target>
-
-	<!-- move libraries and source code -->
-	<target name="move-libraries-and-source-code" >
+	
+	<!-- 01- Move libraries and source code -->
+	<target name="01-move-libraries-and-source-code" >
 		<echo>${log.create.RobotLegs.libraries.message}</echo>
         <echo>Copy libs folder</echo>
 		<copy todir="${project.root.url}/libs">
 			<fileset dir="${templates.dir}/libs"/>
   		</copy>
 	</target>
+	
+	
+	<!-- 02- Create default RoboSignals directories -->
+	<target name="02-create-RoboSignals-directories" >
+		<echo>${log.create.RobotLegs.directories.message}</echo>
+        <mkdir dir="${project.url}/${control.dir}" />
+		<mkdir dir="${project.url}/${services.dir}" />
+		<mkdir dir="${project.url}/${signals.dir}" />
+		<mkdir dir="${project.url}/${signals.dir}/${signaltons.dir}" />
+		<mkdir dir="${project.url}/${view.dir}" />
+		<mkdir dir="${project.url}/${view.dir}/components" />
+		<mkdir dir="${project.url}/${view.dir}/mediators" />
+        <mkdir dir="${project.url}/${model.dir}/${vo.dir}" />
+        <mkdir dir="${project.url}/utils" />
+	</target>
 
-	<!-- Generate Main class, context, css & base service class -->
-	<target name="create-main-class-context-and-base-service" >
+
+	<!-- 03- Generate Main class, context class -->
+	<target name="03-create-main-class-context" >
 		<echo>${log.create.main.class.and.context}</echo>
-		<copy file="${robotlegs.templates.dir}/ProjectContext.as"
-			  tofile="${project.url}/${project.name}Context.as"
-			  overwrite="${overwrite.files}" >
+		<copy file="${robosignals.templates.dir}/ProjectSignalContext.as"
+			  tofile="${project.url}/${project.name}Context.as" overwrite="${overwrite.files}" >
 	        <filterchain>
 	           <replacetokens>
 					<token key="author.name" value="${author.name}" />
@@ -54,10 +58,30 @@
 	            </replacetokens>
 	        </filterchain>
 	    </copy>
-		<echo>Copy ${robotlegs.templates.dir}/Main.mxml</echo>
-		<copy file="${robotlegs.templates.dir}/Main.mxml"
-			  tofile="${project.main.url}/Main.mxml"
-			  overwrite="${overwrite.files}" >
+		<echo>Copy ${robosignals.templates.dir}/Main.mxml to ${project.main.url}/Main.mxml</echo>
+		<copy file="${robosignals.templates.dir}/Main.mxml"
+			  tofile="${project.main.url}/Main.mxml" overwrite="${overwrite.files}" >
+	        <filterchain>
+	           <replacetokens>
+					<token key="author.name" value="${author.name}" />
+					<token key="author.email" value="${author.email}" />
+					<token key="company.name" value="${company.name}" />
+					<token key="project.name" value="${project.name}" />
+	           		<token key="namespace" value="${namespace}" />
+	           		<token key="context" value="${project.name}Context"/>
+					<token key="year" value="${year}" />
+	            </replacetokens>
+	        </filterchain>
+	    </copy>
+
+	</target>
+
+
+	<!-- 03a- Generate Main class, context class AS -->
+	<target name="03-create-main-class-context-as" >
+		<echo>${log.create.main.class.and.context}</echo>
+		<copy file="${robosignals.templates.dir}/ProjectSignalContext.as"
+			  tofile="${project.url}/${project.name}Context.as" overwrite="${overwrite.files}" >
 	        <filterchain>
 	           <replacetokens>
 					<token key="author.name" value="${author.name}" />
@@ -66,44 +90,33 @@
 					<token key="project.name" value="${project.name}" />
 	           		<token key="namespace" value="${namespace}" />
 					<token key="year" value="${year}" />
+	           		<token key="robotlegs.dir" value="${robotlegs.dir}" />
 	            </replacetokens>
 	        </filterchain>
 	    </copy>
-
-		<echo>Copy ${robotlegs.templates.dir}/Main.css</echo>
-		<copy file="${robotlegs.templates.dir}/Main.css"
-			  tofile="${project.main.url}/Main.css"
-			  overwrite="${overwrite.files}" >
-	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/BaseService.as"
-	    	tofile="${project.url}/${services.dir}/BaseService.as" overwrite="${overwrite.files}" >
+		<echo>Copy ${robosignals.templates.dir}/Main.as to ${project.main.url}/Main.as</echo>
+		<copy file="${robosignals.templates.dir}/Main.as"
+			  tofile="${project.main.url}/Main.as" overwrite="${overwrite.files}" >
 	        <filterchain>
 	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="services.dir " value="${services.dir}" />
-						<token key="gesture" value="${gesture}" />
-			           	<token key="upperCaseGesture" value="${upperCaseGesture}" />
-		           		<token key="lowerCaseGesture" value="${lowerCaseGesture}" />
+					<token key="author.name" value="${author.name}" />
+					<token key="author.email" value="${author.email}" />
+					<token key="company.name" value="${company.name}" />
+					<token key="project.name" value="${project.name}" />
+	           		<token key="namespace" value="${namespace}" />
+	           		<token key="context" value="${project.name}Context"/>
+					<token key="year" value="${year}" />
 	            </replacetokens>
 	        </filterchain>
 	    </copy>
 
 	</target>
-
-	<!-- add-startup-command -->
-	<target name="add-startup-command">
-
+	
+	<!-- 04- add-startup-command -->
+	<target name="04-add-startup-command">
 		<echo>${log.add.startup.commmand.message}</echo>
-
-	    <copy file="${robotlegs.templates.dir}/StartupCommand.as"
-	    	  tofile="${project.url}/${control.dir}/StartupCommand.as"
+	    <copy file="${robosignals.templates.dir}/StartupCommand.as" 
+	    	  tofile="${project.url}/${control.dir}/StartupCommand.as" 
 	    	  overwrite="${overwrite.files}" >
 	        <filterchain>
 	           <replacetokens>
@@ -117,678 +130,415 @@
 	            </replacetokens>
 	        </filterchain>
 	    </copy>
-
-	    <convertToUpperCase property="upperCaseGesture" value="${gesture}" />
-	    <convertToLowerCase property="lowerCaseGesture" value="${gesture}" />
-
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: add commands"
-			     value="// todo: add commands${line.separator}
-						     commandMap.mapEvent(ContextEvent.STARTUP, StartupCommand, ContextEvent, true);"
+		
+		<copy file="${robosignals.templates.dir}/StartupSignal.as" 
+			    	  tofile="${project.url}/${signals.dir}/StartupSignal.as" 
+			    	  overwrite="${overwrite.files}" >
+			        <filterchain>
+			           <replacetokens>
+							<token key="author.name" value="${author.name}" />
+							<token key="author.email" value="${author.email}" />
+							<token key="company.name" value="${company.name}" />
+							<token key="project.name" value="${project.name}" />
+							<token key="namespace" value="${namespace}" />
+							<token key="year" value="${year}" />
+							<token key="gesture" value="Startup" />
+					        <token key="signalton" value="" />
+			            </replacetokens>
+			        </filterchain>
+			    </copy>
+		<replace file="${project.url}/${project.name}Context.as" 
+			     token="// todo: add Commands"
+			     value="// todo: add Commands${line.separator}
+							    var startupSignal:IDispatcher = signalCommandMap.mapSignalClass(StartupSignal, StartupCommand) as IDispatcher;"
 			     />
-
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="super.startup();"
-			     value="dispatchEvent( new ContextEvent( ContextEvent.STARTUP ) );"
-			     />
-	</target>
-
-	<!-- add-command -->
-	<target name="add-command">
-
-		<echo>${log.create.commmand.message}</echo>
-
-	    <convertToUpperCase property="upperCaseGesture" value="${gesture}" />
-	    <convertToLowerCase property="lowerCaseGesture" value="${gesture}" />
-
-	    <copy file="${robotlegs.templates.dir}/Command.as"
-	    	  tofile="${project.url}/${control.dir}/${gesture}Command.as"
-	    	  overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="project.name" value="${project.name}" />
-					<token key="namespace" value="${namespace}" />
-					<token key="year" value="${year}" />
-					<token key="gesture" value="${gesture}" />
-		           	<token key="upperCaseGesture"  value="${upperCaseGesture}" />
-	           		<token key="lowerCaseGesture"  value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-	</target>
-
-	<target name="add-event-command-user-gesture">
-
-		<echo>${log.add.event.commmand.message}</echo>
-
-	    <convertToUpperCase property="upperCaseGesture" value="${gesture}" />
-	    <convertToLowerCase property="lowerCaseGesture" value="${gesture}" />
-
-	    <copy file="${robotlegs.templates.dir}/CommandWithEvent.as"
-	    	  tofile="${project.url}/${control.dir}/${gesture}Command.as"
-	    	  overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="project.name" value="${project.name}" />
-					<token key="namespace" value="${namespace}" />
-					<token key="year" value="${year}" />
-					<token key="gesture" value="${gesture}" />
-		           	<token key="upperCaseGesture"  value="${upperCaseGesture}" />
-	           		<token key="lowerCaseGesture"  value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/Event.as"
-	    	  tofile="${project.url}/${events.dir}/${gesture}Event.as"
-	    	  overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="project.name" value="${project.name}" />
-					<token key="namespace" value="${namespace}" />
-					<token key="year" value="${year}" />
-					<token key="gesture" value="${gesture}" />
-		           	<token key="upperCaseGesture"  value="${upperCaseGesture}" />
-	           		<token key="lowerCaseGesture"  value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-		<echo>Register command with context class</echo>
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: add commands"
-			     value="// todo: add commands${line.separator}
-			        commandMap.mapEvent(${gesture}Event.${upperCaseGesture}_EVENT, ${gesture}Command, ${gesture}Event);"
-			     />
-	</target>
-
-	<target name="add-event-command-service-user-gesture">
-
-		<echo>${log.add.event.commmand.services.message}</echo>
-
-	    <convertToUpperCase property="upperCaseGesture" value="${gesture}" />
-	    <convertToLowerCase property="lowerCaseGesture" value="${gesture}" />
-
-	    <copy file="${robotlegs.templates.dir}/ResultCommand.as"
-	    	  tofile="${project.url}/${control.dir}/${gesture}ResultCommand.as"
-	    	  overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="project.name" value="${project.name}" />
-					<token key="namespace" value="${namespace}" />
-					<token key="year" value="${year}" />
-					<token key="gesture" value="${gesture}" />
-		           	<token key="upperCaseGesture"  value="${upperCaseGesture}" />
-	           		<token key="lowerCaseGesture"  value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/ServiceCommand.as"
-	    	  tofile="${project.url}/${control.dir}/${gesture}Command.as"
-	    	  overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="project.name" value="${project.name}" />
-					<token key="namespace" value="${namespace}" />
-					<token key="year" value="${year}" />
-					<token key="gesture" value="${gesture}" />
-		           	<token key="upperCaseGesture"  value="${upperCaseGesture}" />
-	           		<token key="lowerCaseGesture"  value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/ServiceEvent.as"
-	    	  tofile="${project.url}/${events.dir}/${gesture}Event.as"
-	    	  overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="project.name" value="${project.name}" />
-					<token key="namespace" value="${namespace}" />
-					<token key="year" value="${year}" />
-					<token key="gesture" value="${gesture}" />
-		           	<token key="upperCaseGesture"  value="${upperCaseGesture}" />
-	           		<token key="lowerCaseGesture"  value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/ServiceWithEvent.as"
-	    	tofile="${project.url}/${services.dir}/${gesture}Service.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="services.dir " value="${services.dir}" />
-						<token key="gesture" value="${gesture}" />
-			           	<token key="upperCaseGesture" value="${upperCaseGesture}" />
-		           		<token key="lowerCaseGesture" value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/IService.as"
-	    	tofile="${project.url}/${services.dir}/I${gesture}Service.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="services.dir " value="${services.dir}" />
-						<token key="gesture" value="${gesture}" />
-			           	<token key="upperCaseGesture" value="${upperCaseGesture}" />
-		           		<token key="lowerCaseGesture" value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-		<echo>Register service with context class</echo>
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: Add Services"
-			     value="// todo: Add Services${line.separator}
-			        injector.mapSingletonOf( I${gesture}Service, ${gesture}Service );"
-			     />
-
-		<echo>Register command with context class</echo>
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: add commands"
-			     value="// todo: add commands${line.separator}
-			        commandMap.mapEvent(${gesture}Event.${upperCaseGesture}_EVENT, ${gesture}Command, ${gesture}Event);${line.separator}
-			        commandMap.mapEvent(${gesture}Event.${upperCaseGesture}_RESULT_EVENT, ${gesture}ResultCommand, ${gesture}Event);"
-			     />
-	</target>
-
-	<!-- create ValueObject class -->
-	<target name="create-value-object" >
-		<echo>${log.value.object.message}</echo>
-
-	    <copy file="${robotlegs.templates.dir}/ValueObject.as"
-	    	tofile="${project.url}/${model.dir}/${vo.dir}/${gesture}VO.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}VO" />
-                    	<token key="vo.dir" value="${vo.dir}" />
-                    	<token key="model.dir" value="${model.dir}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-	</target>
-
-	<!-- create view-mediator class -->
-	<target name="create-view-mediator" >
-		<echo>${log.view.mediator.message}</echo>
-
-	    <convertToUpperCase property="upperCaseGesture" value="${gesture}" />
-	    <convertToLowerCase property="lowerCaseGesture" value="${gesture}" />
-
-	    <copy file="${robotlegs.templates.dir}/Mediator.as"
-	    	tofile="${project.url}/${view.dir}/mediators/${gesture}Mediator.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="view.dir" value="${view.dir}" />
-        		        <token key="upperCaseGesture" value="${upperCaseGesture}" />
-        	           	<token key="lowerCaseGesture" value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/View.mxml"
-	    	tofile="${project.url}/${view.dir}/${gesture}View.mxml" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="view.dir" value="${view.dir}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-		<echo>Register mediator with context class</echo>
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: Add View"
-			     value="// todo: Add View${line.separator}
-					      mediatorMap.mapView(${gesture}View, ${gesture}Mediator);"
-			     />
-
-	</target>
-
-
-	<!-- create presenter-view class -->
-	<target name="create-presenter-view" >
-		<echo>${log.presenter.view.message}</echo>
-
-	    <convertToUpperCase property="upperCaseGesture" value="${gesture}" />
-	    <convertToLowerCase property="lowerCaseGesture" value="${gesture}" />
-
-	    <copy file="${robotlegs.templates.dir}/Presenter.as"
-	    	tofile="${project.url}/${view.dir}/presenters/${gesture}Presenter.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="view.dir" value="${view.dir}" />
-        		        <token key="upperCaseGesture" value="${upperCaseGesture}" />
-        	           	<token key="lowerCaseGesture" value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/View.mxml"
-	    	tofile="${project.url}/${view.dir}/${gesture}View.mxml" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="view.dir" value="${view.dir}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-		<echo>Register singleton with context class</echo>
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: add singleton"
-			     value="// todo: add singleton${line.separator}
-					      injector.mapSingleton( ${gesture}Presenter );"
-			     />
-
-	</target>
-
-	<!-- create model class -->
-	<target name="create-model-class" >
-		<echo>${log.create.model.class.message}</echo>
-
-	    <copy file="${robotlegs.templates.dir}/Model.as"
-	    	tofile="${project.url}/${model.dir}/${gesture}Model.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="model.dir" value="${model.dir}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-		<echo>Register model with context class</echo>
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: Add Model"
-			     value="// todo: Add Model${line.separator}
-			        injector.mapSingleton( ${gesture}Model );"
-			     />
-
-	</target>
-
-	<!-- create service class -->
-	<target name="create-service-class" >
-		<echo>${log.create.service.message}</echo>
-
-	    <copy file="${robotlegs.templates.dir}/Service.as"
-	    	tofile="${project.url}/${services.dir}/${gesture}Service.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="services.dir " value="${services.dir}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/IService.as"
-	    	tofile="${project.url}/${services.dir}/I${gesture}Service.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="services.dir " value="${services.dir}" />
-						<token key="gesture" value="${gesture}" />
-			           	<token key="upperCaseGesture" value="${upperCaseGesture}" />
-		           		<token key="lowerCaseGesture" value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-		<echo>Register service with context class</echo>
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// TODO: Add Services"
-			     value="// TODO: Add Services${line.separator}
-			     injector.mapSingletonOf( I${gesture}Service, ${gesture}Service );"
-			     />
-
-	</target>
-
-	<!-- Add signal command user gesture -->
-	<target name="add-signal-command-user-gesture">
-		<echo>${log.add.signal.commmand.message}</echo>
-
-		<copy file="${robotlegs.templates.dir}/Signal.as" tofile="${project.url}/${signals.dir}/${gesture}Signal.as" >
-			<filterchain>
-				<replacetokens>
-					<token key="year" value="${year}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="project.name" value="${project.name}" />
-					<token key="namespace" value="${namespace}.${signals.dir}" />
-					<token key="gesture" value="${gesture}" />
-				</replacetokens>
-			</filterchain>
-		</copy>
-		<copy file="${robotlegs.templates.dir}/SignalCommand.as" tofile="${project.url}/${control.dir}/${gesture}Command.as">
-			<filterchain>
-				<replacetokens>
-					<token key="year" value="${year}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="project.name" value="${project.name}" />
-					<token key="namespace" value="${namespace}.${control.dir}" />
-					<token key="gesture" value="${gesture}" />
-				</replacetokens>
-			</filterchain>
-		</copy>
-
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: add commands"
-			     value="// todo: add commands${line.separator}
-			        signalCommandMap.mapSignalClass(${gesture}Signal, ${gesture}Command);"
-			     />
-	</target>
-
-	<!-- Add Signal Command User Gesture -->
-	<target name="add-signal-command-param-user-gesture">
-		<echo>${log.add.signal.commmand.param.message}</echo>
-
-		<convertToCamelCase property="camelCaseGesture" value="${gesture}" />
-
-		<copy file="${robotlegs.templates.dir}/SignalWithParam.as" tofile="${project.url}/${signals.dir}/${gesture}Signal.as" >
-			<filterchain>
-				<replacetokens>
-					<token key="year" value="${year}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="project.name" value="${project.name}" />
-					<token key="namespace" value="${namespace}.${signals.dir}" />
-					<token key="gesture" value="${gesture}" />
-					<token key="camelCaseGesture" value="${camelCaseGesture}" />
-                	<token key="vo.dir" value="${vo.dir}" />
-                	<token key="model.dir" value="${model.dir}" />
-				</replacetokens>
-			</filterchain>
-		</copy>
-		<copy file="${robotlegs.templates.dir}/SignalCommandAndParam.as" tofile="${project.url}/${control.dir}/${gesture}Command.as">
-			<filterchain>
-				<replacetokens>
-					<token key="year" value="${year}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="project.name" value="${project.name}" />
-					<token key="namespace" value="${namespace}" />
-					<token key="gesture" value="${gesture}" />
-					<token key="camelCaseGesture" value="${camelCaseGesture}" />
-                	<token key="vo.dir" value="${vo.dir}" />
-                	<token key="model.dir" value="${model.dir}" />
-				</replacetokens>
-			</filterchain>
-		</copy>
-
-	    <copy file="${robotlegs.templates.dir}/ValueObject.as"
-	    	tofile="${project.url}/${model.dir}/${vo.dir}/${gesture}.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="vo.dir" value="${vo.dir}" />
-                    	<token key="model.dir" value="${model.dir}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: add commands"
-			     value="// todo: add commands${line.separator}
-			        signalCommandMap.mapSignalClass(${gesture}Signal, ${gesture}Command);"
+		<replace file="${project.url}/${project.name}Context.as" 
+			     token="// todo: add StartupSignal dispatch"
+			     value="startupSignal.dispatch();"
 			     />
 	</target>
 	
-	<target name="add-signal-command-service-user-gesture">
-
-		<echo>${log.add.signal.commmand.services.message}</echo>
-
-	    <convertToUpperCase property="upperCaseGesture" value="${gesture}" />
-	    <convertToLowerCase property="lowerCaseGesture" value="${gesture}" />
+	<!-- 05- add-signal-command-context-gesture 
+		 U need to set gesture in project properties 
+		 TODO: add [Inject] tag into Command Class -->
+	<target name="05-add-signal-command-context-gesture">
 		
-	    <copy file="${robotlegs.templates.dir}/SignalCommand.as"
-	    	  tofile="${project.url}/${control.dir}/${gesture}ResultCommand.as"
-	    	  overwrite="${overwrite.files}" >
+		<antform title="Please, type a name of the command">
+				<textProperty label="Command: " property="gestureName" />
+				<!--<textProperty label="Mediator : " property="mediatorName" />-->
+		</antform>
+		
+		<echo>${gestureName}</echo>
+		<!--<echo>${mediatorName}</echo>-->
+	
+		<echo>${log.create.commmand.message}</echo>
+	   
+		<convertToUpperCase property="upperCaseGesture" value="${gestureName}" />
+	    <convertToLowerCase property="lowerCaseGesture" value="${gestureName}" />
+	    
+		<copy file="${robosignals.templates.dir}/StartupCommand.as" 
+	    	  tofile="${project.url}/${control.dir}/${gestureName}Command.as" overwrite="${overwrite.files}" >
 	        <filterchain>
 	           <replacetokens>
 					<token key="author.name" value="${author.name}" />
 					<token key="author.email" value="${author.email}" />
 					<token key="company.name" value="${company.name}" />
 					<token key="project.name" value="${project.name}" />
-	           		<token key="namespace" value="${namespace}.${control.dir}" />
+					<token key="namespace" value="${namespace}" />
 					<token key="year" value="${year}" />
-					<token key="gesture" value="${gesture}Result" />
-		           	<token key="upperCaseGesture"  value="${upperCaseGesture}" />
-	           		<token key="lowerCaseGesture"  value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>		
-
-	    <copy file="${robotlegs.templates.dir}/ServiceSignalCommand.as"
-	    	  tofile="${project.url}/${control.dir}/${gesture}Command.as"
-	    	  overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-					<token key="author.name" value="${author.name}" />
-					<token key="author.email" value="${author.email}" />
-					<token key="company.name" value="${company.name}" />
-					<token key="project.name" value="${project.name}" />
-	           		<token key="namespace" value="${namespace}" />
-					<token key="year" value="${year}" />
-					<token key="gesture" value="${gesture}" />
+					<token key="gesture" value="${gestureName}" />
 		           	<token key="upperCaseGesture"  value="${upperCaseGesture}" />
 	           		<token key="lowerCaseGesture"  value="${lowerCaseGesture}" />
 	            </replacetokens>
 	        </filterchain>
 	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/Signal.as"
-	    	  tofile="${project.url}/${signals.dir}/${gesture}Signal.as"
-	    	  overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
+		
+		<copy file="${robosignals.templates.dir}/StartupSignal.as" 
+	    	tofile="${project.url}/${signals.dir}/${gestureName}Signal.as" overwrite="${overwrite.files}" >
+			<filterchain>
+				<replacetokens>
 					<token key="author.name" value="${author.name}" />
 					<token key="author.email" value="${author.email}" />
 					<token key="company.name" value="${company.name}" />
 					<token key="project.name" value="${project.name}" />
-	           		<token key="namespace" value="${namespace}.${signals.dir}" />
+					<token key="namespace" value="${namespace}" />
 					<token key="year" value="${year}" />
-					<token key="gesture" value="${gesture}" />
-	            </replacetokens>
+					<token key="gesture" value="${gestureName}" />
+					<token key="signalton" value="" />
+				</replacetokens>
 	        </filterchain>
 	    </copy>
 		
-		    <copy file="${robotlegs.templates.dir}/Signal.as"
-		    	  tofile="${project.url}/${signals.dir}/${gesture}ResultSignal.as"
-		    	  overwrite="${overwrite.files}" >
-		        <filterchain>
-		           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-		           		<token key="namespace" value="${namespace}.${signals.dir}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}Result" />
-		            </replacetokens>
-		        </filterchain>
-		    </copy>		
-
-	    <copy file="${robotlegs.templates.dir}/ServiceWithSignal.as"
-	    	tofile="${project.url}/${services.dir}/${gesture}Service.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="services.dir " value="${services.dir}" />
-						<token key="gesture" value="${gesture}" />
-			           	<token key="upperCaseGesture" value="${upperCaseGesture}" />
-		           		<token key="lowerCaseGesture" value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-	    <copy file="${robotlegs.templates.dir}/IService.as"
-	    	tofile="${project.url}/${services.dir}/I${gesture}Service.as" overwrite="${overwrite.files}" >
-	        <filterchain>
-	           <replacetokens>
-						<token key="author.name" value="${author.name}" />
-						<token key="author.email" value="${author.email}" />
-						<token key="company.name" value="${company.name}" />
-						<token key="project.name" value="${project.name}" />
-						<token key="namespace" value="${namespace}" />
-						<token key="year" value="${year}" />
-						<token key="gesture" value="${gesture}" />
-                    	<token key="services.dir " value="${services.dir}" />
-						<token key="gesture" value="${gesture}" />
-			           	<token key="upperCaseGesture" value="${upperCaseGesture}" />
-		           		<token key="lowerCaseGesture" value="${lowerCaseGesture}" />
-	            </replacetokens>
-	        </filterchain>
-	    </copy>
-
-		<echo>Register service with context class</echo>
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: Add Services"
-			     value="// todo: Add Services${line.separator}
-			        injector.mapSingletonOf( I${gesture}Service, ${gesture}Service );"
-			     />
-
-		<echo>Register command with context class</echo>
-		<replace file="${project.url}/${project.name}Context.as"
-			     token="// todo: add commands"
-			     value="// todo: add commands${line.separator}
-	          signalCommandMap.mapSignalClass(${gesture}Signal, ${gesture}Command);${line.separator}
-	          signalCommandMap.mapSignalClass(${gesture}ResultSignal, ${gesture}ResultCommand);"
-			     />
+		<replace file="${project.url}/${project.name}Context.as" 
+					     token="// todo: add Commands"
+					     value="// todo: add Commands${line.separator}
+									  signalCommandMap.mapSignalClass(${gestureName}Signal, ${gestureName}Command);"
+					     />
+		
 	</target>	
 
+
+
+    <!-- 06- create view-mediator class -->
+    <target name="06-create-view-mediator" >
+        <echo>${log.view.mediator.message}</echo>
+        <antform title="Please, type a name of view component">
+                <textProperty label="View/Mediator: " property="gestureName" />
+        </antform>
+        <echo>${gestureName}</echo>
+
+        <convertToUpperCase property="upperCaseGesture" value="${gestureName}" />
+        <convertToLowerCase property="lowerCaseGesture" value="${gestureName}" />
+        <echo>copy file ${robosignals.templates.dir}/Mediator.as to ${project.url}/${view.dir}/mediators/${gestureName}Mediator.as</echo>
+        <copy file="${robosignals.templates.dir}/Mediator.as"
+            tofile="${project.url}/${view.dir}/mediators/${gestureName}Mediator.as" overwrite="${overwrite.files}" >
+            <filterchain>
+               <replacetokens>
+                        <token key="author.name" value="${author.name}" />
+                        <token key="author.email" value="${author.email}" />
+                        <token key="company.name" value="${company.name}" />
+                        <token key="project.name" value="${project.name}" />
+                        <token key="namespace" value="${namespace}" />
+                        <token key="year" value="${year}" />
+                        <token key="gesture" value="${gestureName}" />
+                        <token key="view.dir" value="${view.dir}" />
+                        <token key="upperCaseGesture" value="${upperCaseGesture}" />
+                           <token key="lowerCaseGesture" value="${lowerCaseGesture}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <echo>copy file=${robosignals.templates.dir}/View.mxml to ${project.url}/${view.dir}/${gestureName}View.mxml overwrite ${overwrite.files}</echo>
+        <copy file="${robosignals.templates.dir}/View.mxml"
+            tofile="${project.url}/${view.dir}/${gestureName}View.mxml" overwrite="${overwrite.files}" >
+            <filterchain>
+               <replacetokens>
+                        <token key="author.name" value="${author.name}" />
+                        <token key="author.email" value="${author.email}" />
+                        <token key="company.name" value="${company.name}" />
+                        <token key="project.name" value="${project.name}" />
+                        <token key="namespace" value="${namespace}" />
+                        <token key="year" value="${year}" />
+                        <token key="gesture" value="${gestureName}" />
+                        <token key="view.dir" value="${view.dir}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <echo>Register mediator with context class</echo>
+        <replace file="${project.url}/${project.name}Context.as"
+                 token="// todo: Add View"
+                 value="// todo: Add View${line.separator}
+                          mediatorMap.mapView(${gestureName}View, ${gestureName}Mediator);"
+                 />
+
+    </target>
+
+
+
+    <!-- 06a- create view-mediator class AS-->
+    <target name="06a-create-view-mediator-as" >
+        <echo>${log.view.mediator.message}</echo>
+        <antform title="Please, type a name of view component">
+                <textProperty label="View/Mediator: " property="gestureName" />
+        </antform>
+        <echo>${gestureName}</echo>
+
+        <convertToUpperCase property="upperCaseGesture" value="${gestureName}" />
+        <convertToLowerCase property="lowerCaseGesture" value="${gestureName}" />
+        <echo>copy file ${robosignals.templates.dir}/Mediator.as to ${project.url}/${view.dir}/mediators/${gestureName}Mediator.as</echo>
+        <copy file="${robosignals.templates.dir}/Mediator.as"
+            tofile="${project.url}/${view.dir}/mediators/${gestureName}Mediator.as" overwrite="${overwrite.files}" >
+            <filterchain>
+               <replacetokens>
+                        <token key="author.name" value="${author.name}" />
+                        <token key="author.email" value="${author.email}" />
+                        <token key="company.name" value="${company.name}" />
+                        <token key="project.name" value="${project.name}" />
+                        <token key="namespace" value="${namespace}" />
+                        <token key="year" value="${year}" />
+                        <token key="gesture" value="${gestureName}" />
+                        <token key="view.dir" value="${view.dir}" />
+                        <token key="upperCaseGesture" value="${upperCaseGesture}" />
+                           <token key="lowerCaseGesture" value="${lowerCaseGesture}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <echo>copy file=${robosignals.templates.dir}/View.as to ${project.url}/${view.dir}/${gestureName}View.as overwrite ${overwrite.files}</echo>
+        <copy file="${robosignals.templates.dir}/View.as"
+            tofile="${project.url}/${view.dir}/${gestureName}View.as" overwrite="${overwrite.files}" >
+            <filterchain>
+               <replacetokens>
+                        <token key="author.name" value="${author.name}" />
+                        <token key="author.email" value="${author.email}" />
+                        <token key="company.name" value="${company.name}" />
+                        <token key="project.name" value="${project.name}" />
+                        <token key="namespace" value="${namespace}" />
+                        <token key="year" value="${year}" />
+                        <token key="gesture" value="${gestureName}" />
+                        <token key="view.dir" value="${view.dir}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <echo>Register mediator with context class</echo>
+        <replace file="${project.url}/${project.name}Context.as"
+                 token="// todo: Add View"
+                 value="// todo: Add View${line.separator}
+                          mediatorMap.mapView(${gestureName}View, ${gestureName}Mediator);"
+                 />
+
+    </target>
+
+
+	<!-- 07- create model class -->
+	<target name="07-create-model-class" >
+		<echo>${log.create.model.class.message}</echo>
+		<antform title="Please, type a name of model class">
+				<textProperty label="Model: " property="gestureName" />
+		</antform>
+		<echo>GestureName: ${gestureName}</echo>
+		
+	    <copy file="${robosignals.templates.dir}/Model.as" 
+	    	tofile="${project.url}/${model.dir}/${gestureName}Model.as" overwrite="${overwrite.files}" >
+	        <filterchain>
+	           <replacetokens>
+						<token key="author.name" value="${author.name}" />
+						<token key="author.email" value="${author.email}" />
+						<token key="company.name" value="${company.name}" />
+						<token key="project.name" value="${project.name}" />
+						<token key="namespace" value="${namespace}" />
+						<token key="year" value="${year}" />
+						<token key="gesture" value="${gestureName}" />
+                    	<token key="model.dir" value="${model.dir}" />
+	            </replacetokens>
+	        </filterchain>
+	    </copy>
+		
+		<echo>Register model with context class</echo>
+		<replace file="${project.url}/${project.name}Context.as" 
+			     token="// todo: Add Model"
+			     value="// todo: Add Model${line.separator}
+			        injector.mapSingleton( ${gestureName}Model );"
+			     />
+		
+	</target>
+	
+	<!-- 08- signal singleton (dispatched by model) -->
+		<target name="08-signalton-(eg.-dispatched-by-model)" >
+			<echo>${log.create.model.class.message}</echo>
+			<antform title="Please, type a name of a signalton">
+				<textProperty label="Signalton: " property="gestureName" />
+			</antform>
+			<echo>GestureName: ${gestureName}</echo>
+		    <copy file="${robosignals.templates.dir}/StartupSignal.as" 
+		    	tofile="${project.url}/${signals.dir}/signaltons/${gestureName}Signal.as" overwrite="${overwrite.files}" >
+		        <filterchain>
+		           <replacetokens>
+							<token key="author.name" value="${author.name}" />
+							<token key="author.email" value="${author.email}" />
+							<token key="company.name" value="${company.name}" />
+							<token key="project.name" value="${project.name}" />
+							<token key="namespace" value="${namespace}" />
+							<token key="year" value="${year}" />
+							<token key="gesture" value="${gestureName}" />
+	                    	<token key="model.dir" value="${model.dir}" />
+					        <token key="signalton" value=".signaltons" />
+		            </replacetokens>
+		        </filterchain>
+		    </copy>
+			
+			<echo>Register model with context class</echo>
+			<replace file="${project.url}/${project.name}Context.as" 
+				     token="// todo: add Singleton"
+				     value="// todo: add Singleton${line.separator}
+				        injector.mapSingleton( ${gestureName}Signal );"
+				     />
+			
+		</target>
+		
+	
+	<!--09 create service class -->
+	<target name="09-create-service-class" >
+		<echo>${log.create.service.message}</echo>
+		<antform title="Please, type a name of a service class">
+				<textProperty label="Service: " property="gestureName" />
+		</antform>
+		<echo>GestureName: ${gestureName}</echo>
+	    <copy file="${robosignals.templates.dir}/Service.as" 
+	    	tofile="${project.url}/${services.dir}/${gestureName}Service.as" overwrite="${overwrite.files}" >
+	        <filterchain>
+	           <replacetokens>
+						<token key="author.name" value="${author.name}" />
+						<token key="author.email" value="${author.email}" />
+						<token key="company.name" value="${company.name}" />
+						<token key="project.name" value="${project.name}" />
+						<token key="namespace" value="${namespace}" />
+						<token key="year" value="${year}" />
+						<token key="gesture" value="${gestureName}" />
+                    	<token key="services.dir " value="${services.dir}" />
+	            </replacetokens>
+	        </filterchain>
+	    </copy>
+	    
+	    <copy file="${robosignals.templates.dir}/IService.as" 
+	    	tofile="${project.url}/${services.dir}/I${gestureName}Service.as" overwrite="${overwrite.files}" >
+	        <filterchain>
+	           <replacetokens>
+						<token key="author.name" value="${author.name}" />
+						<token key="author.email" value="${author.email}" />
+						<token key="company.name" value="${company.name}" />
+						<token key="project.name" value="${project.name}" />
+						<token key="namespace" value="${namespace}" />
+						<token key="year" value="${year}" />
+						<token key="gesture" value="${gestureName}" />
+                    	<token key="services.dir " value="${services.dir}" />
+						<token key="gesture" value="${gestureName}" />
+			           	<token key="upperCaseGesture" value="${upperCaseGesture}" />
+		           		<token key="lowerCaseGesture" value="${lowerCaseGesture}" />                    	
+	            </replacetokens>
+	        </filterchain>
+	    </copy>		    
+		
+		<echo>Register service with context class</echo>
+		<replace file="${project.url}/${project.name}Context.as" 
+			     token="// todo: Add Services"
+			     value="// todo: Add Services${line.separator}
+			        injector.mapSingletonOf( I${gestureName}Service, ${gestureName}Service );"
+			     />
+		
+	</target>
+	
+	
+	<!-- 10 restfull coding by indyq -->
+	<!--<target name="10-inject-signal-to-mediator-add-listener">
+		<echo>${log.value.object.message}</echo>
+		<antform title="Please, type in Gesture Name">
+				<textProperty label="Gesture: " property="gestureName" />
+				<textProperty label="Target Mediator: " property="targetMaediator" />
+		</antform>
+		<echo>GestureName: ${gestureName}</echo>
+		
+		<convertToCamelCase property="camelCaseGesture" value="${gestureName}" />
+		<echo>${camelCaseGesture}</echo>
+		
+		<replace file="${project.url}/${view.dir}/mediators/${targetMediator}Mediator.as" 
+			     token="/** inject **/" 
+			     value="/** inject **/${line.separator}
+       [Inject]${line.separator}
+       public var ${camelCaseGesture}Signal:${gestureName}Signal;${line.separator}"
+		/>
+		
+		<replace file="${project.url}/${view.dir}/mediators/${targetMediator}Mediator.as" 
+			     token="/** addListerners **/" 
+			     value="/** addListerners **/${line.separator}
+           ${camelCaseGesture}Signal.add(${camelCaseGesture}SignalHandler);"
+		/>
+		
+		
+		<replace file="${project.url}/${view.dir}/mediators/${targetMediator}Mediator.as" 
+			     token="/** eventHandlers **/" 
+			     value="/** eventHandlers **/${line.separator}
+       //todo: add params ${line.separator}
+       public function ${camelCaseGesture}SignalHandler() : void {${line.separator}${line.separator} 
+       }"
+		/>
+	</target>-->
+	
+	
+	<!-- 11 create ValueObject class -->
+	<target name="11-create-value-object" >
+		<echo>${log.value.object.message}</echo>
+		<antform title="Please, type a name of a value object">
+				<textProperty label="Value Object: " property="gestureName" />
+		</antform>
+		<echo>GestureName: ${gestureName}</echo>
+		
+	    <copy file="${robotlegs.templates.dir}/ValueObject.as" 
+	    	tofile="${project.url}/${model.dir}/${vo.dir}/${gestureName}VO.as" overwrite="${overwrite.files}" >
+	        <filterchain>
+	           <replacetokens>
+						<token key="author.name" value="${author.name}" />
+						<token key="author.email" value="${author.email}" />
+						<token key="company.name" value="${company.name}" />
+						<token key="project.name" value="${project.name}" />
+						<token key="namespace" value="${namespace}" />
+						<token key="year" value="${year}" />
+						<token key="gesture" value="${gestureName}" />
+                    	<token key="vo.dir" value="${vo.dir}" />
+                    	<token key="model.dir" value="${model.dir}" />
+	            </replacetokens>
+	        </filterchain>
+	    </copy>
+	</target>
+	
+	<target name="main" />
+	
     <!-- private -->
+	<scriptdef name="convertToCamelCase" language="javascript" >
+		<attribute name="property" />
+		<attribute name="value"    />
+		project.setNewProperty( attributes.get("property"), attributes.get("value").substring(0,1).toLowerCase() + attributes.get("value").substring(1) );
+	</scriptdef>
+	
 	<scriptdef name="convertToUpperCase" language="javascript" >
 		<attribute name="property" />
 		<attribute name="value"    />
 		project.setNewProperty( attributes.get("property"), attributes.get("value").toUpperCase() );
 	</scriptdef>
-
+	
 	<scriptdef name="convertToLowerCase" language="javascript" >
 		<attribute name="property" />
 		<attribute name="value"    />
 		project.setNewProperty( attributes.get("property"), attributes.get("value").toLowerCase() );
-	</scriptdef>
-
-	<scriptdef name="convertToPascalCase" language="javascript">
-		<attribute name="property" />
-		<attribute name="value" />
-		val = attributes.get("value");
-		val = val.substr(0,1).toUpperCase() + val.substr(1);
-		project.setNewProperty( attributes.get("property"), val);
-	</scriptdef>
-
-	<scriptdef name="convertToCamelCase" language="javascript">
-		<attribute name="property" />
-		<attribute name="value" />
-		val = attributes.get("value");
-		val = val.substr(0,1).toLowerCase() + val.substr(1);
-		project.setNewProperty( attributes.get("property"), val);
-	</scriptdef>
-
-	<scriptdef name="setTabValue" language="javascript">
-		<attribute name="property" />
-		project.setNewProperty( attributes.get("property"), "\t");
-	</scriptdef>
-
-</project>
+	</scriptdef>			      
+    
+	<path id="runtime.cp">
+		<pathelement location="bin/"/>
+		<fileset dir="libs" includes="antform.jar"/>
+	</path>
+	<taskdef name="antform" classname="com.sardak.antform.AntForm"
+		classpathref="runtime.cp"/>
+	<taskdef name="antmenu" classname="com.sardak.antform.AntMenu"
+		classpathref="runtime.cp"/>
+	
+</project>    

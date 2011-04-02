@@ -1,13 +1,9 @@
 /*
-
 Copyright (c) @year@ @company.name@, All Rights Reserved 
-
 @author   @author.name@
 @contact  @author.email@
 @project  @project.name@
-
 @internal 
-
 */
 package @namespace@.@view.dir@.mediators
 {
@@ -16,9 +12,6 @@ package @namespace@.@view.dir@.mediators
 	import org.robotlegs.mvcs.Mediator;
 	
 	import flash.utils.describeType;
-	//import mx.logging.ILogger;
-	//import mx.logging.Log;	
-	
 	/**
 	 * <p>The mediator is used to handle framework interaction with View Components. 
 	 * A Mediator will listen for framework events, add event listeners to the View Components, 
@@ -26,57 +19,39 @@ package @namespace@.@view.dir@.mediators
 	 * responsible for. This allows the developer to put application specific logic on the Mediator, 
 	 * and avoid coupling View components to specific applications.</p>
 	 *  
-	 */		
+	 */
 	public class @gesture@Mediator extends Mediator
 	{
+		/**
+		 * VIEW
+		 */
 		[Inject]
 		public var @lowerCaseGesture@View:@gesture@View;		
 		
 		/**
-		 * Create variable to point to this class. 
-		 * 
-		 * @private
-		 *
-		 */     	
-		//private var logger:ILogger = Log.getLogger(describeType(this).@name.split("::").join("."));			
+		 * SIGNALTONS
+		 */
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Variables
-		//
-		//--------------------------------------------------------------------------		
-		
-		// implement
-		
-		//--------------------------------------------------------------------------
-		//
-		//  onRegister
-		//
-		//--------------------------------------------------------------------------		
 		
 		/**
+		 * SIGNAL -> COMMAND
+		 */
+		
+		/** variables **/
+		
+		/** 
+		 * onRegister 
 		 * Override the invoked of the <code>IMediator</code> and allow you to place your own initialization. 
 		 */		
 		override public function onRegister():void
 		{
-			//logger.info("onRegister");
 			
 		}
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Methods
-		//
-		//--------------------------------------------------------------------------
+		/** methods **/		
 		
-		// implement 
+		/** eventHandlers **/
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Event handlers
-		//
-		//--------------------------------------------------------------------------	
 		
-		// implement 
 	}
 }
