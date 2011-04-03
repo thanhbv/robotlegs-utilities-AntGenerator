@@ -5,15 +5,12 @@ Copyright (c) @year@ @company.name@, All Rights Reserved
 @project  @project.name@
 @internal 
 */
-package @namespace@.@view.dir@
-{
+package @namespace@.@view.dir@ {
 	import flash.display.Sprite;
 	
-	public class @gesture@View extends Sprite
-	{
+	public class @gesture@View extends Sprite {
 		
-		public function @gesture@View():void 
-		{
+		public function @gesture@View() {
 			
 		}
 		

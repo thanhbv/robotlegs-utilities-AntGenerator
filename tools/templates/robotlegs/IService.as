@@ -9,10 +9,8 @@ Copyright (c) @year@ @company.name@, All Rights Reserved
 @internal 
 
 */
-package @namespace@.services
-{
-	public interface I@gesture@Service
-	{
-		function send():void;
-	}
+package @namespace@.services {
+public interface I@gesture@Service {
+	function send():void;
+}
 }

@@ -148,12 +148,12 @@
 			        </filterchain>
 			    </copy>
 		<replace file="${project.url}/${project.name}Context.as" 
-			     token="// todo: add Commands"
-			     value="// todo: add Commands${line.separator}
+			     token="//add Commands.."
+			     value="//add Commands..${line.separator}
 							    var startupSignal:IDispatcher = signalCommandMap.mapSignalClass(StartupSignal, StartupCommand) as IDispatcher;"
 			     />
 		<replace file="${project.url}/${project.name}Context.as" 
-			     token="// todo: add StartupSignal dispatch"
+			     token="//add StartupSignal, dispatch.."
 			     value="startupSignal.dispatch();"
 			     />
 	</target>
@@ -210,8 +210,8 @@
 	    </copy>
 		
 		<replace file="${project.url}/${project.name}Context.as" 
-					     token="// todo: add Commands"
-					     value="// todo: add Commands${line.separator}
+					     token="//add Commands.."
+					     value="//add Commands..${line.separator}
 									  signalCommandMap.mapSignalClass(${gestureName}Signal, ${gestureName}Command);"
 					     />
 		
@@ -266,8 +266,8 @@
 
         <echo>Register mediator with context class</echo>
         <replace file="${project.url}/${project.name}Context.as"
-                 token="// todo: Add View"
-                 value="// todo: Add View${line.separator}
+                 token="//add Views.."
+                 value="//add Views..${line.separator}
                           mediatorMap.mapView(${gestureName}View, ${gestureName}Mediator);"
                  />
 
@@ -322,8 +322,8 @@
 
         <echo>Register mediator with context class</echo>
         <replace file="${project.url}/${project.name}Context.as"
-                 token="// todo: Add View"
-                 value="// todo: Add View${line.separator}
+                 token="//add Views.."
+                 value="//add Views..${line.separator}
                           mediatorMap.mapView(${gestureName}View, ${gestureName}Mediator);"
                  />
 
@@ -356,8 +356,8 @@
 		
 		<echo>Register model with context class</echo>
 		<replace file="${project.url}/${project.name}Context.as" 
-			     token="// todo: Add Model"
-			     value="// todo: Add Model${line.separator}
+			     token="//add Models.."
+			     value="//add Models..${line.separator}
 			        injector.mapSingleton( ${gestureName}Model );"
 			     />
 		
@@ -389,8 +389,8 @@
 			
 			<echo>Register model with context class</echo>
 			<replace file="${project.url}/${project.name}Context.as" 
-				     token="// todo: add Singleton"
-				     value="// todo: add Singleton${line.separator}
+				     token="//add Singletons.."
+				     value="//add Singletons..${line.separator}
 				        injector.mapSingleton( ${gestureName}Signal );"
 				     />
 			
@@ -441,8 +441,8 @@
 		
 		<echo>Register service with context class</echo>
 		<replace file="${project.url}/${project.name}Context.as" 
-			     token="// todo: Add Services"
-			     value="// todo: Add Services${line.separator}
+			     token="//add Services.."
+			     value="//add Services..${line.separator}
 			        injector.mapSingletonOf( I${gestureName}Service, ${gestureName}Service );"
 			     />
 		

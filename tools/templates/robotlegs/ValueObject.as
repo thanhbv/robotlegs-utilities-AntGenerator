@@ -7,20 +7,12 @@ Copyright (c) @year@ @company.name@, All Rights Reserved
 @project  @project.name@
 
 @internal 
-
 */
-package @namespace@.@model.dir@.@vo.dir@
-{
-    [Bindable]
-    /**
-     *
-     * Defines the <code>@gesture@VO<code> Value Object implementation
-     *
-     */
-	public final class @gesture@VO
-	{
-		public function @gesture@VO() 
-		{
-		}
+package @namespace@.@model.dir@.@vo.dir@ {
+[Bindable]
+/**Defines the <code>@gesture@VO<code> Value Object implementation*/
+public final class @gesture@VO {
+	public function @gesture@VO() {
 	}
+}
 }
